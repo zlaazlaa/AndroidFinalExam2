@@ -16,15 +16,22 @@
 
     <style name="AppTheme.Red" parent="Theme.AppCompat.Light">
         <!-- 主题的属性定义 -->
-        <item name="colorPrimary">@color/colorRedPrimary</item>
-        <item name="colorPrimaryDark">@color/colorRedPrimaryDark</item>
-        <item name="colorAccent">@color/colorRedAccent</item>
+        <item name="colorPrimary">#F58E8E</item>
+        <item name="colorPrimaryDark">#23D37070</item>
+        <item name="colorAccent">#85EF8B8B</item>
     </style>
 
     <style name="AppTheme.Blue" parent="Theme.AppCompat.Light">
         <!-- 主题的属性定义 -->
-        <item name="colorPrimary">@color/colorBluePrimary</item>
-        <item name="colorPrimaryDark">@color/colorBluePrimaryDark</item>
-        <item name="colorAccent">@color/colorBlueAccent</item>
+        <item name="colorPrimary">#7777E1</item>
+        <item name="colorPrimaryDark">#277E66C1</item>
+        <item name="colorAccent">#DA8996DA</item>
     </style>
+
+    <style name="AppTheme_Green" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#CE70DF99</item>
+        <item name="colorPrimaryDark">#280CAA0C</item>
+        <item name="colorAccent">#D25EED60</item>
+    </style>
+
 </resources>

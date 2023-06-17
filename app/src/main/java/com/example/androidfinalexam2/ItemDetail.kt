@@ -1,6 +1,7 @@
 package com.example.androidfinalexam2
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Handler
@@ -31,6 +32,9 @@ class ItemDetail : AppCompatActivity() {
 
     @SuppressLint("SimpleDateFormat", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
+        val sharedPrefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val themeValue = sharedPrefs.getInt("theme", R.style.AppTheme_Blue)
+        setTheme(themeValue)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_detail)
         textTitle = findViewById(R.id.textTitle)

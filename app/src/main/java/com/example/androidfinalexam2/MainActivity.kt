@@ -1,6 +1,7 @@
 package com.example.androidfinalexam2
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var spinnerCategory: Spinner
     private lateinit var spinnerMonth: Spinner
     private lateinit var spinnerClaimStatus: Spinner
+    private val uiHandler = Handler(Looper.getMainLooper())
+
 
     private val spinnerItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(
@@ -41,8 +44,13 @@ class MainActivity : AppCompatActivity() {
             // 不执行任何操作
         }
     }
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
+        val sharedPrefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPrefs.edit()
+        val themeValue = sharedPrefs.getInt("theme", R.style.AppTheme_Blue)
+        setTheme(themeValue)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
@@ -59,17 +67,24 @@ class MainActivity : AppCompatActivity() {
 
         btnLightTheme.setOnClickListener {
             setTheme(R.style.AppTheme_Red)
+            editor.putInt("theme", R.style.AppTheme_Red)
+            editor.apply()
             recreate()
+            recreateWithDelay()
         }
 
         btnDarkTheme.setOnClickListener {
-            setTheme(R.style.AppTheme_Blue)
-            recreate()
+            setTheme(R.style.AppTheme_Green)
+            editor.putInt("theme", R.style.AppTheme_Green)
+            editor.apply()
+            recreateWithDelay()
         }
 
         btnBlueTheme.setOnClickListener {
             setTheme(R.style.AppTheme_Blue)
-            recreate()
+            editor.putInt("theme", R.style.AppTheme_Blue)
+            editor.apply()
+            recreateWithDelay()
         }
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -82,7 +97,8 @@ class MainActivity : AppCompatActivity() {
             "类型筛选", "书籍", "电子产品", "手机", "平板电脑", "电脑",
             "相机", "音乐播放器", "耳机", "充电器", "数据线", "证件"
         )
-        val monthData = listOf("月份筛选", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
+        val monthData =
+            listOf("月份筛选", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
         val claimStatusData = listOf("状态筛选", "未认领", "已认领")
 
         val categoryAdapter = MainAdapter(this, categoryData)
@@ -100,6 +116,12 @@ class MainActivity : AppCompatActivity() {
         refresh()
     }
 
+    private fun recreateWithDelay() {
+        uiHandler.postDelayed({
+            recreate()
+        }, 100)
+    }
+
     private fun refreshRecyclerView(category: String, month: String, claimStatus: String) {
         var modifiedCategory = category
         var modifiedMonth = month
@@ -114,7 +136,8 @@ class MainActivity : AppCompatActivity() {
             modifiedClaimStatus = ""
         }
         val httpClient = HttpClient()
-        val url = "https://ljm-python.azurewebsites.net/get_lost_items?category=$modifiedCategory&month=$modifiedMonth&claim_status=$modifiedClaimStatus"
+        val url =
+            "https://ljm-python.azurewebsites.net/get_lost_items?category=$modifiedCategory&month=$modifiedMonth&claim_status=$modifiedClaimStatus"
         httpClient.get(url) { responseData, exception ->
             if (exception != null) {
                 exception.printStackTrace()

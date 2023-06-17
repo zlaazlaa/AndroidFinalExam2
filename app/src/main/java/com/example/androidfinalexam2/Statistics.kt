@@ -1,5 +1,6 @@
 package com.example.androidfinalexam2
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -20,6 +21,9 @@ import org.json.JSONObject
 class Statistics : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     override fun onCreate(savedInstanceState: Bundle?) {
+        val sharedPrefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val themeValue = sharedPrefs.getInt("theme", R.style.AppTheme_Blue)
+        setTheme(themeValue)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
         updateBar()

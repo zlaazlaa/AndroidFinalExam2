@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -55,6 +56,10 @@ class AddLost : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedPrefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val themeValue = sharedPrefs.getInt("theme", R.style.AppTheme_Blue)
+        setTheme(themeValue)
+
         setContentView(R.layout.activity_add_lost)
 
         titleEditText = findViewById(R.id.editTextTitle)
@@ -197,7 +202,7 @@ class AddLost : AppCompatActivity() {
         val bitmap = (imageView.drawable as BitmapDrawable).bitmap
         try {
             val fileOutputStream = FileOutputStream(filePath)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 60, fileOutputStream)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, fileOutputStream)
             fileOutputStream.flush()
             fileOutputStream.close()
             Log.d("saveImageToFile", "Image saved successfully.")
@@ -211,7 +216,7 @@ class AddLost : AppCompatActivity() {
     private fun convertImageToBase64(imageView: ImageView): String {
         val bitmap = (imageView.drawable as BitmapDrawable).bitmap
         val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, byteArrayOutputStream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream.toByteArray()
 //        Log.e("photo", Base64.encodeToString(byteArray, Base64.DEFAULT))
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
